@@ -164,36 +164,7 @@ namespace Shen
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawEF", "Flash + E Range").SetValue(new Circle(false, System.Drawing.Color.Gray)));
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawRswnp", "Show Who Need Help").SetValue(true));
             }
-
-            /* [ Speech ] */
-            Config.AddSubMenu(new Menu("Speech", "Speech"));
-            {
-                var xKey = char.ConvertFromUtf32((int)Config.Item("ComboUseRK").GetValue<KeyBind>().Key);
-                
-                Config.SubMenu("Speech").AddSubMenu(new Menu("Speech Test", "SpeechTest"));
-                {
-                    Config.SubMenu("Speech").SubMenu("SpeechTest").AddItem(new MenuItem("SpeechText", "Ezreal needs your help press " + xKey + " for ultimate!"));
-                    Config.SubMenu("Speech").SubMenu("SpeechTest").AddItem(new MenuItem("SpeechButton", "Test Now").SetValue(false))
-                        .ValueChanged += (sender, e) =>
-                        {
-                            if (e.GetNewValue<bool>())
-                            {
-                                Speech();
-                                Config.Item("SpeechButton").SetValue(false);
-                            }
-                        };
-                }
-
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechVolume", "Volume").SetValue(new Slider(50, 10, 100)));//.ValueChanged += (sender, eventArgs) => { Game.PrintChat("AAA"); };
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRate", "Rate").SetValue(new Slider(3, -10, 10)));
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechGender", "Gender").SetValue(new StringList(new[] {"Male", "Female"}, 1)));
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRepeatTime", "Repeat").SetValue(new StringList(new[] {"Repeat 1 Time ", "Repeat 2 Times", "Repeat 3 Times", "Repeat Everytime"}, 1)));
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRepeatDelay", "Repeat Delay Sec.").SetValue(new Slider(3, 1, 5)));
-                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechActive", "Enabled").SetValue(true));
-            }
-
-            new PotionManager();
-            Config.AddToMainMenu();
+            
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             
