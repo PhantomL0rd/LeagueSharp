@@ -190,8 +190,8 @@ namespace Shen
                 Config.SubMenu("Speech").AddItem(new MenuItem("SpeechActive", "Enabled").SetValue(true));
             }
 
-            new PotionManager();
-            Config.AddToMainMenu();
+            //new PotionManager();
+            //Config.AddToMainMenu();
 
             Game.OnGameUpdate += Game_OnGameUpdate;
             
