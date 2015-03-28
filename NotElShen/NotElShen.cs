@@ -48,7 +48,7 @@ namespace Shen
 
         private static void Game_OnGameLoad(EventArgs args)
         {
-            if (ObjectManager.Player.ChampionName != Shen) 
+            if (ObjectManager.Player.ChampionName != "Shen") 
                 return;
             
             if (ObjectManager.Player.IsDead) 
