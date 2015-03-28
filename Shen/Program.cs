@@ -5,7 +5,6 @@ using System.Linq;
 using System.Timers;
 using System.Xml.Linq;
 using System.IO;
-using System.Speech.Synthesis;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
@@ -18,7 +17,6 @@ namespace Shen
         public const string ChampionName = "Shen";
         //Orbwalker instance
         public static Orbwalking.Orbwalker Orbwalker;
-        public static SpeechSynthesizer voice = new SpeechSynthesizer();
 
         //Spells
         public static List<Spell> SpellList = new List<Spell>();
