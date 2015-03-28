@@ -84,7 +84,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PotionManager.cs" />
     <Compile Include="NotElShen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
