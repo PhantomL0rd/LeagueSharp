@@ -9,6 +9,7 @@ using System.Speech.Synthesis;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using Color = System.Drawing.Color;
 #endregion
 
 namespace Shen
@@ -47,7 +48,7 @@ namespace Shen
 
         private static void Game_OnGameLoad(EventArgs args)
         {
-            if (ObjectManager.Player.BaseSkinName != ChampionName) 
+            if (ObjectManager.Player.ChampionName != Shen) 
                 return;
             
             if (ObjectManager.Player.IsDead) 
@@ -66,7 +67,7 @@ namespace Shen
             R = new Spell(SpellSlot.R);
 
             //Create the menu
-            Config = new Menu("xQx | Shen", "Shen", true);
+            Config = new Menu("Shen", "Shen", true);
 
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
             TargetSelector.AddToMenu(targetSelectorMenu);
