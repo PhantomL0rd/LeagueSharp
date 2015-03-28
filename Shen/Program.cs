@@ -66,7 +66,7 @@ namespace Shen
             R = new Spell(SpellSlot.R);
 
             //Create the menu
-            Config = new Menu("Shen", "Shen", true);
+            Config = new Menu("xQx | Shen", "Shen", true);
 
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
             TargetSelector.AddToMenu(targetSelectorMenu);
@@ -92,8 +92,8 @@ namespace Shen
                 Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseQ", "Use Q").SetValue(true));
                 Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseW", "Use W").SetValue(true));
                 Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseE", "Use E").SetValue(true));
-                Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseEF", "Use Flash + Taunt").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
-                Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseRE", "Use R | Every time").SetValue(true));
+                Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseEF", "Use Flash + E").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
+                Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseRE", "Use R | Everytime").SetValue(true));
                 Config.SubMenu("Combo").AddItem(new MenuItem("ComboUseRK", "Use R | Confirm with this Key:").SetValue(new KeyBind("U".ToCharArray()[0], KeyBindType.Press)));
                 Config.SubMenu("Combo").AddItem(new MenuItem("ComboActive", "Combo!").SetValue(new KeyBind(Config.Item("Orbwalk").GetValue<KeyBind>().Key, KeyBindType.Press)));
             }
@@ -148,6 +148,8 @@ namespace Shen
                 MenuNonTargetedItems = new Menu("AOE Items", "menuNonTargetedItems");
                 {
                     menuUseItems.AddSubMenu(MenuNonTargetedItems);
+                    MenuNonTargetedItems.AddItem(new MenuItem("item3180", "Odyn's Veil").SetValue(true));
+                    MenuNonTargetedItems.AddItem(new MenuItem("item3131", "Sword of the Divine").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3074", "Ravenous Hydra").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3077", "Tiamat ").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3142", "Youmuu's Ghostblade").SetValue(true));
@@ -160,17 +162,15 @@ namespace Shen
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawQ", "Q Range").SetValue(new Circle(true, System.Drawing.Color.Gray)));
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawE", "E Range").SetValue(new Circle(false, System.Drawing.Color.Gray)));
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawEF", "Flash + E Range").SetValue(new Circle(false, System.Drawing.Color.Gray)));
-                Config.SubMenu("Drawings").AddItem(new MenuItem("DrawRswnp", "Show Who Needs Your Ult").SetValue(true));
+                Config.SubMenu("Drawings").AddItem(new MenuItem("DrawRswnp", "Show Who Need Help").SetValue(true));
             }
-			/* [ Info ] */
-			Config.AddSubMenu(new Menu("Info", "Info"));
-			{
-			
-                Config.SubMenu(new MenuItem("Author", "Author: PhantomL0rd"));
-                Config.SubMenu(new MenuItem("Email", "Email: PhantomLordLeagueSharp@gmail.com"));
-                
-			}
-		
+
+            Game.OnGameUpdate += Game_OnGameUpdate;
+            
+            Drawing.OnDraw += Drawing_OnDraw;
+            Interrupter.OnPossibleToInterrupt += Interrupter_OnPosibleToInterrupt;
+
+            Game.PrintChat(String.Format("<font color='#70DBDB'>xQx | </font> <font color='#FFFFFF'>{0}</font> <font color='#70DBDB'> Loaded!</font>", ChampionName));
 
         public static bool InShopRange(Obj_AI_Hero xAlly)
         {
