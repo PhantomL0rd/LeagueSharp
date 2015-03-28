@@ -66,7 +66,7 @@ namespace Shen
             R = new Spell(SpellSlot.R);
 
             //Create the menu
-            Config = new Menu("xQx | Shen", "Shen", true);
+            Config = new Menu("Shen", "Shen", true);
 
             var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
             TargetSelector.AddToMenu(targetSelectorMenu);
@@ -165,12 +165,78 @@ namespace Shen
                 Config.SubMenu("Drawings").AddItem(new MenuItem("DrawRswnp", "Show Who Need Help").SetValue(true));
             }
 
+            /* [ Speech ] */
+            Config.AddSubMenu(new Menu("Speech", "Speech"));
+            {
+                var xKey = char.ConvertFromUtf32((int)Config.Item("ComboUseRK").GetValue<KeyBind>().Key);
+                
+                Config.SubMenu("Speech").AddSubMenu(new Menu("Speech Test", "SpeechTest"));
+                {
+                    Config.SubMenu("Speech").SubMenu("SpeechTest").AddItem(new MenuItem("SpeechText", "Ezreal needs your help press " + xKey + " for ultimate!"));
+                    Config.SubMenu("Speech").SubMenu("SpeechTest").AddItem(new MenuItem("SpeechButton", "Test Now").SetValue(false))
+                        .ValueChanged += (sender, e) =>
+                        {
+                            if (e.GetNewValue<bool>())
+                            {
+                                Speech();
+                                Config.Item("SpeechButton").SetValue(false);
+                            }
+                        };
+                }
+
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechVolume", "Volume").SetValue(new Slider(50, 10, 100)));//.ValueChanged += (sender, eventArgs) => { Game.PrintChat("AAA"); };
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRate", "Rate").SetValue(new Slider(3, -10, 10)));
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechGender", "Gender").SetValue(new StringList(new[] {"Male", "Female"}, 1)));
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRepeatTime", "Repeat").SetValue(new StringList(new[] {"Repeat 1 Time ", "Repeat 2 Times", "Repeat 3 Times", "Repeat Everytime"}, 1)));
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechRepeatDelay", "Repeat Delay Sec.").SetValue(new Slider(3, 1, 5)));
+                Config.SubMenu("Speech").AddItem(new MenuItem("SpeechActive", "Enabled").SetValue(true));
+            }
+
+            new PotionManager();
+            Config.AddToMainMenu();
+
             Game.OnGameUpdate += Game_OnGameUpdate;
             
             Drawing.OnDraw += Drawing_OnDraw;
             Interrupter.OnPossibleToInterrupt += Interrupter_OnPosibleToInterrupt;
 
-            Game.PrintChat(String.Format("<font color='#70DBDB'>xQx | </font> <font color='#FFFFFF'>{0}</font> <font color='#70DBDB'> Loaded!</font>", ChampionName));
+            Game.PrintChat(String.Format("<font color='#70DBDB'>PhantomL0rds Shen </font> <font color='#FFFFFF'>{0}</font> <font color='#70DBDB'> Why hello there ;)</font>", ChampionName));
+
+            Speech();
+        }
+
+        public static void Speech()
+        {
+            if (!Config.Item("SpeechActive").GetValue<bool>())
+                return;
+            var xSpeechText = Config.Item("SpeechText").DisplayName.ToString();
+            var xSpeechVolume = Config.Item("SpeechVolume").GetValue<Slider>().Value;
+            var xSpeechRate = Config.Item("SpeechRate").GetValue<Slider>().Value;
+            var xSpeechGender = Config.Item("SpeechGender").GetValue<StringList>().SelectedIndex;
+            var xSpeechRepeatTime = Config.Item("SpeechRepeatTime").GetValue<StringList>().SelectedIndex;
+            var xSpeechRepeatDelay = Config.Item("SpeechRepeatDelay").GetValue<Slider>().Value;
+
+            try
+            {
+                switch (xSpeechGender)
+                {
+                    case 0:
+                        voice.SelectVoiceByHints(VoiceGender.Male);
+                        break;
+                    case 1:
+                        voice.SelectVoiceByHints(VoiceGender.Female);
+                        break;
+                }
+                voice.Volume = xSpeechVolume;
+                voice.Rate = xSpeechRate;
+                voice.SpeakAsync(xSpeechText);
+            }
+            catch (Exception e)
+            {
+                Game.PrintChat(e.Message);
+            }
+            
+        }
 
         public static bool InShopRange(Obj_AI_Hero xAlly)
         {
