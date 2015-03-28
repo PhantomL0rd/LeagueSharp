@@ -148,8 +148,6 @@ namespace Shen
                 MenuNonTargetedItems = new Menu("AOE Items", "menuNonTargetedItems");
                 {
                     menuUseItems.AddSubMenu(MenuNonTargetedItems);
-                    MenuNonTargetedItems.AddItem(new MenuItem("item3180", "Odyn's Veil").SetValue(true));
-                    MenuNonTargetedItems.AddItem(new MenuItem("item3131", "Sword of the Divine").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3074", "Ravenous Hydra").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3077", "Tiamat ").SetValue(true));
                     MenuNonTargetedItems.AddItem(new MenuItem("item3142", "Youmuu's Ghostblade").SetValue(true));
@@ -192,51 +190,13 @@ namespace Shen
                 Config.SubMenu("Speech").AddItem(new MenuItem("SpeechActive", "Enabled").SetValue(true));
             }
 
-            new PotionManager();
-            Config.AddToMainMenu();
-
             Game.OnGameUpdate += Game_OnGameUpdate;
             
             Drawing.OnDraw += Drawing_OnDraw;
             Interrupter.OnPossibleToInterrupt += Interrupter_OnPosibleToInterrupt;
 
             Game.PrintChat(String.Format("<font color='#70DBDB'>PhantomL0rds Shen </font> <font color='#FFFFFF'>{0}</font> <font color='#70DBDB'> Why hello there ;)</font>", ChampionName));
-
-            Speech();
-        }
-
-        public static void Speech()
-        {
-            if (!Config.Item("SpeechActive").GetValue<bool>())
-                return;
-            var xSpeechText = Config.Item("SpeechText").DisplayName.ToString();
-            var xSpeechVolume = Config.Item("SpeechVolume").GetValue<Slider>().Value;
-            var xSpeechRate = Config.Item("SpeechRate").GetValue<Slider>().Value;
-            var xSpeechGender = Config.Item("SpeechGender").GetValue<StringList>().SelectedIndex;
-            var xSpeechRepeatTime = Config.Item("SpeechRepeatTime").GetValue<StringList>().SelectedIndex;
-            var xSpeechRepeatDelay = Config.Item("SpeechRepeatDelay").GetValue<Slider>().Value;
-
-            try
-            {
-                switch (xSpeechGender)
-                {
-                    case 0:
-                        voice.SelectVoiceByHints(VoiceGender.Male);
-                        break;
-                    case 1:
-                        voice.SelectVoiceByHints(VoiceGender.Female);
-                        break;
-                }
-                voice.Volume = xSpeechVolume;
-                voice.Rate = xSpeechRate;
-                voice.SpeakAsync(xSpeechText);
-            }
-            catch (Exception e)
-            {
-                Game.PrintChat(e.Message);
-            }
             
-        }
 
         public static bool InShopRange(Obj_AI_Hero xAlly)
         {
@@ -310,47 +270,7 @@ namespace Shen
             }            
         }
         private static void Game_OnGameUpdate(EventArgs args)
-        {
-            DrawHelplessAllies();
-            if (!Orbwalking.CanMove(100)) return;
-
-            if (Config.Item("ComboActive").GetValue<KeyBind>().Active)
-            {
-                Combo();
-            }
-
-            if (Config.Item("ComboUseRK").GetValue<KeyBind>().Active)
-            {
-                ComboUseRWithKey();
-            }
-
-            if (Config.Item("ComboUseEF").GetValue<KeyBind>().Active)
-            {
-                ComboFlashE();
-            }
-
-            if (Config.Item("HarassActive").GetValue<KeyBind>().Active)
-            {
-                var existsMana = ObjectManager.Player.MaxMana / 100 * Config.Item("HarassEnergy").GetValue<Slider>().Value;
-                if (ObjectManager.Player.Mana >= existsMana)
-                    Harass();
-            }
-
-            if (Config.Item("LaneClearActive").GetValue<KeyBind>().Active)
-            {
-                var existsMana = ObjectManager.Player.MaxMana / 100 * Config.Item("LaneClearEnergy").GetValue<Slider>().Value;
-                if (ObjectManager.Player.Mana >= existsMana)
-                    LaneClear();
-            }
-
-            if (Config.Item("JungleFarmActive").GetValue<KeyBind>().Active)
-            {
-                var existsMana = ObjectManager.Player.MaxMana / 100 * Config.Item("JungleFarmEnergy").GetValue<Slider>().Value;
-                if (ObjectManager.Player.Mana >= existsMana)
-                    JungleFarm();
-            }
-        }
-
+        
         private static void Combo()
         {
             var useQ = Config.Item("ComboUseQ").GetValue<bool>();
