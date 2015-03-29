@@ -17,11 +17,8 @@ namespace Shen
     internal class Program
     {
         public const string ChampionName = "Shen";
-        //Orbwalker instance
         public static Orbwalking.Orbwalker Orbwalker;
         public static SpeechSynthesizer voice = new SpeechSynthesizer();
-
-        //Spells
         public static List<Spell> SpellList = new List<Spell>();
         public static Spell Q, W, E, R;
 
@@ -35,7 +32,7 @@ namespace Shen
         private double pbUnit;
         private int pbWidth, pbHeight, pbComplete;
 
-        //Menu
+        //Menus
         public static Menu Config;
         public static Menu MenuExtras;
         public static Menu MenuTargetedItems;
